@@ -22,10 +22,10 @@ out UBRRL, temp_0
 ldi temp_0, (1<<UDRIE)|(1<<TXEN)
 out UCSRB, temp_0
 
-ldi ZH, high(none_txt * 2)
+/*ldi ZH, high(none_txt * 2)
 ldi ZL, low(none_txt * 2)
 lpm temp_0, Z+
-out UDR, temp_0
+out UDR, temp_0*/
 
 cbi DDRC, 5
 sbi PORTC, 5
@@ -37,7 +37,7 @@ cbi DDRC, 7
 sbi PORTC, 7
 
 ldi switcher, 0b00000000
-ldi mutex, 1
+ldi mutex, 0
 
 sei
 
@@ -48,13 +48,10 @@ end: rjmp end
 next_data:
 
 
-// write next data
-lpm temp_0, Z+
-out UDR, temp_0
 
 
 // check none end
-cpi switcher, 0b00000000
+/*cpi switcher, 0b00000000
 brne skip_none_end_check
 
 cpi ZH, high(end_none_txt * 2)
@@ -64,7 +61,7 @@ brne skip_none_end_check
 
 ldi mutex, 0
 
-skip_none_end_check:
+skip_none_end_check:*/
 
 
 // check btn_5 end
@@ -113,6 +110,14 @@ ldi temp_0, 0b01111111
 and switcher, temp_0
 
 skip_btn_7_end_check:
+
+
+cpi switcher, 0b00000000
+breq skip_out
+// write next data
+lpm temp_0, Z+
+out UDR, temp_0
+skip_out:
 
 
 // check mutex
@@ -198,10 +203,10 @@ skip_button_7_check:
 
 
 // no buttons clicked
-ldi ZH, high(none_txt * 2)
+/*ldi ZH, high(none_txt * 2)
 ldi ZL, low(none_txt * 2)
 ldi mutex, 1
-rjmp end_data
+rjmp end_data*/
 
 end_data: 
 reti
