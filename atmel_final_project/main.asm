@@ -124,9 +124,30 @@ brne end_data
 cpi switcher, 0b00000000
 brne skip_buttons_check
 
-ldi switcher, 0b11100000
+// check btn 5 click
+sbic PINC, 5
+rjmp skip_5_click
+	ldi temp_0, 0b00100000
+	or switcher, temp_0
+skip_5_click:
+
+// check btn 6 click
+sbic PINC, 6
+rjmp skip_6_click
+	ldi temp_0, 0b01000000
+	or switcher, temp_0
+skip_6_click:
+
+// check btn 7 click
+sbic PINC, 7
+rjmp skip_7_click
+	ldi temp_0, 0b10000000
+	or switcher, temp_0
+skip_7_click:
+
+/*ldi switcher, 0b11100000
 in temp_0, PINC
-and switcher, temp_0
+and switcher, temp_0*/
 
 skip_buttons_check:
 
